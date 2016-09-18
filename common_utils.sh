@@ -18,6 +18,9 @@ if [ $(uname) == "Darwin" ]; then IS_OSX=1; fi
 # https://github.com/direnv/direnv/issues/210
 shell_session_update() { :; }
 
+# Include python_utils.sh with common_utils.sh
+source $MULTIBUILD_DIR/python_utils.sh
+
 function abspath {
     python -c "import os.path; print(os.path.abspath('$1'))"
 }
