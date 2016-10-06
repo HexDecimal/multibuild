@@ -10,6 +10,8 @@ MACPYTHON_URL=https://www.python.org/ftp/python
 MACPYTHON_PY_PREFIX=/Library/Frameworks/Python.framework/Versions
 WORKING_SDIR=working
 
+PYPY_URL=https://bitbucket.org/pypy/pypy/downloads
+
 function pyinst_ext_for_version {
     # echo "pkg" or "dmg" depending on the passed Python version
     # Parameters
@@ -41,8 +43,15 @@ function install_python {
     # Sub-function will set $PYTHON_EXE variable to the python executable
     if [ -n "$MB_PYTHON_VERSION" ]; then
         install_macpython $MB_PYTHON_VERSION
+    elif [ -n "$PYPY_VERSION" ]; then
+        install_mac_pypy $PYPY_VERSION
+    elif [ -n "$PYPY3_VERSION" ]; then
+        install_mac_pypy3 $PYPY3_VERSION
     else
-        echo "expected MB_PYTHON_VERSION enviroment variable"
+        echo "config error: expected one of these enviroment variables:"
+        echo "    MB_PYTHON_VERSION"
+        echo "    PYPY_VERSION"
+        echo "    PYPY3_VERSION"
         exit 1
     fi
 }
@@ -67,6 +76,39 @@ function install_macpython {
     sudo installer -pkg $inst_path -target /
     local py_mm=${py_version:0:3}
     PYTHON_EXE=$MACPYTHON_PY_PREFIX/$py_mm/bin/python$py_mm
+}
+
+
+function install_mac_pypy {
+    # Installs pypy.org PyPy
+    # Parameter $version
+    # Version given in major or major.minor or major.minor.micro e.g
+    # "3" or "3.4" or "3.4.1".
+    # sets $PYTHON_EXE variable to python executable
+    local py_version=$(fill_pypy_ver $1)
+    local py_build=$(get_pypy_build_prefix $py_version)$py_version-osx64
+    local py_zip=$py_build.tar.bz2
+    local zip_path=$DOWNLOADS_SDIR/$py_zip
+    mkdir -p $DOWNLOADS_SDIR
+    wget -nv $PYPY_URL/${py_zip} -P $DOWNLOADS_SDIR
+    untar $zip_path
+    PYTHON_EXE=$(realpath $py_build/bin/pypy)
+}
+
+function install_mac_pypy3 {
+    # Installs pypy.org PyPy3
+    # Parameter $version
+    # Version given in major or major.minor or major.minor.micro e.g
+    # "3" or "3.4" or "3.4.1".
+    # sets $PYTHON_EXE variable to python executable
+    local py_version=$(fill_pypy3_ver $1)
+    local py_build=$(get_pypy3_build_prefix $py_version)$py_version-osx64
+    local py_zip=$py_build.tar.bz2
+    local zip_path=$DOWNLOADS_SDIR/$py_zip
+    mkdir -p $DOWNLOADS_SDIR
+    wget -nv $PYPY_URL/${py_zip} -P $DOWNLOADS_SDIR
+    untar $zip_path
+    PYTHON_EXE=$(realpath $py_build/bin/pypy3)
 }
 
 function get_macpython_environment {

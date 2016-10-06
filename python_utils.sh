@@ -169,3 +169,106 @@ function install_python {
     # overwritten in other scripts, if necessary
     :
 }
+
+# latest verions of PyPy and PyPy3 as of October 6th, 2016
+LATEST_PP3_2=2.4
+
+LATEST_PP3_2p4=2.4.0
+LATEST_PP3_2p3=2.3.1
+
+LATEST_PP_5=5.4
+LATEST_PP_4=4.0
+LATEST_PP_2=2.6
+LATEST_PP_1=1.9
+
+LATEST_PP_5p4=5.4.1
+LATEST_PP_5p3=5.3.1
+LATEST_PP_5p2=5.2.0
+LATEST_PP_5p1=5.1.2
+LATEST_PP_5p0=5.0.1
+LATEST_PP_4p0=4.0.1
+LATEST_PP_2p6=2.6.1
+LATEST_PP_2p5=2.5.1
+LATEST_PP_2p4=2.4.0
+LATEST_PP_2p3=2.3.1
+LATEST_PP_2p2=2.2.1
+LATEST_PP_2p0=2.0.2
+
+function unroll_version {
+    # Convert major or major.minor format to major.minor.micro using one of
+    # the above constant prefixes
+    # Parameters:
+    #   $prefix : one of LATEST_PP or LATEST_PP3
+    #
+    # Hence:
+    # LATEST_PP 5 -> 5.4.1
+    # LATEST_PP3 2 -> 2.4.0
+    local prefix=$1
+    local ver=$2
+    local latest=${prefix}_${ver//./p}
+    if [ -n "${!latest}" ]; then
+        echo $(unroll_version ${prefix} ${!latest})
+    else
+        echo $ver
+    fi
+}
+
+function fill_pypy_ver {
+    # Convert major or major.minor format to major.minor.micro
+    #
+    # Note that the oldest versions don't have a micro number
+    #
+    # Depends on LATEST_PP_* values
+    #
+    # Hence:
+    # 5.4 -> 5.4.1  (depending on LATEST_PP_5.4 value)
+    # 5 -> 5.4.1  (depending on LATEST_PP_5 and LATEST_PP_5.4 value)
+    echo $(unroll_version LATEST_PP $1)
+}
+
+function fill_pypy3_ver {
+    # Convert major or major.minor format to major.minor.micro
+    #
+    # Depends on LATEST_PP3_* values
+    echo $(unroll_version LATEST_PP3 $1)
+}
+
+function get_pypy_build_prefix {
+    # gets the file prefix of the pypy.org PyPy2
+    #
+    # Parameters:
+    #   $version : pypy2 version number
+    local version=$1
+    if [[ $version =~ ([0-9]+)\.([0-9]+) ]]; then
+        local major=${BASH_REMATCH[1]}
+        local minor=${BASH_REMATCH[2]}
+        if (( $major > 5 || ($major == 5 && $minor >= 3) )); then
+            echo "pypy2-v"
+        else
+            echo "pypy-"
+        fi
+    else
+        echo "error: expected version number, got $1" 1>&2
+        exit 1
+    fi
+}
+
+function get_pypy3_build_prefix {
+    # gets the file prefix of the pypy.org PyPy3
+    #
+    # Parameters:
+    #   $version : pypy3 version number
+    local version=$1
+    if [[ $version =~ ([0-9]+)\.([0-9]+) ]]; then
+        local major=${BASH_REMATCH[1]}
+        local minor=${BASH_REMATCH[2]}
+        if (( $major <= 2 )); then
+            echo "pypy3-"
+        else
+            echo "pypy3.3-v"
+        fi
+    else
+        echo "error: expected version number, got $1" 1>&2
+        exit 1
+    fi
+}
