@@ -91,7 +91,10 @@ function install_mac_pypy {
     local zip_path=$DOWNLOADS_SDIR/$py_zip
     mkdir -p $DOWNLOADS_SDIR
     wget -nv $PYPY_URL/${py_zip} -P $DOWNLOADS_SDIR
-    untar $zip_path
+    # zip files with a release tag have directories not matching their filename
+    # force unpack directory to be $py_build
+    mkdir $py_build
+    tar -jxf $zip_path -C $py_build --strip-components=1
     PYTHON_EXE=$(realpath $py_build/bin/pypy)
 }
 
@@ -107,7 +110,10 @@ function install_mac_pypy3 {
     local zip_path=$DOWNLOADS_SDIR/$py_zip
     mkdir -p $DOWNLOADS_SDIR
     wget -nv $PYPY_URL/${py_zip} -P $DOWNLOADS_SDIR
-    untar $zip_path
+    # zip files with a release tag have directories not matching their filename
+    # force unpack directory to be $py_build
+    mkdir $py_build
+    tar -jxf $zip_path -C $py_build --strip-components=1
     PYTHON_EXE=$(realpath $py_build/bin/pypy3)
 }
 

@@ -170,11 +170,18 @@ function install_python {
     :
 }
 
-# latest verions of PyPy and PyPy3 as of October 6th, 2016
+# latest verions of PyPy and PyPy3 as of October 19th, 2016
+LATEST_PP3_5=5.5
+LATEST_PP3_5=5.2
 LATEST_PP3_2=2.4
 
+LATEST_PP3_5p5=5.5.0
+LATEST_PP3_5p2=5.2.0
 LATEST_PP3_2p4=2.4.0
 LATEST_PP3_2p3=2.3.1
+
+LATEST_PP3_5p5p0="5.5.0-alpha"
+LATEST_PP3_5p2p0="5.2.0-alpha1"
 
 LATEST_PP_5=5.4
 LATEST_PP_4=4.0
