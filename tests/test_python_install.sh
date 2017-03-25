@@ -27,7 +27,7 @@ if [[ "$requested_version" =~ [^-]* ]]; then
 fi
 
 # simple regex match, a 2.7 pattern will match 2.7.11, but not 2
-if ![[ "$implementer_version" =~ $requested_version ]]; then
+if ! [[ "$implementer_version" =~ $requested_version ]]; then
     ingest "Wrong python version: $implementer_version"
 fi
 
