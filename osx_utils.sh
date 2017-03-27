@@ -121,17 +121,17 @@ function pyinst_ext_for_version {
 }
 
 function install_python {
-    # Picks an implementation of Python determined by the current enviroment
-    # variables, then installs it
+    # Picks an implementation of Python determined by the MB_PYTHON_VERSION
+    # enviroment variable, then installs it
     # A sub-function will set $PYTHON_EXE variable to the python executable
-    if [ -n ${MB_PYTHON_VERSION:-"$PYTHON_VERSION"} ]; then
-        install_macpython ${MB_PYTHON_VERSION:-"$PYTHON_VERSION"}
-    elif [ -n "$PYPY_VERSION" ]; then
-        install_mac_pypy $PYPY_VERSION
+    MB_PYTHON_VERSION=${MB_PYTHON_VERSION:-$PYTHON_VERSION}
+    if [[ "$MB_PYTHON_VERSION" =~ pypy-([0-9\.]+) ]]; then
+        install_mac_pypy "${BASH_REMATCH[1]}"
+    elif [[ "$MB_PYTHON_VERSION" =~ ([0-9\.]+) ]]; then
+        install_macpython "${BASH_REMATCH[1]}"
     else
-        echo "config error: expected one of these enviroment variables:"
-        echo "    MB_PYTHON_VERSION"
-        echo "    PYPY_VERSION"
+        echo "config error: Issue parsing MB_PYTHON_VERSION variable:"
+        echo "    MB_PYTHON_VERSION=$MB_PYTHON_VERSION"
         exit 1
     fi
 }
