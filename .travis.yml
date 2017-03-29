@@ -31,11 +31,47 @@ matrix:
         - VENV=venv
     - os: osx
       env:
-        - PYTHON_VERSION=pypy-1
+        - PYTHON_VERSION=pypy-1.6
         - VENV=venv
     - os: osx
       env:
-        - PYTHON_VERSION=pypy-2
+        - PYTHON_VERSION=pypy-1.7
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-1.8
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-1.9
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-2.0
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-2.1
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-2.2
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-2.3
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-2.4
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-2.5
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-2.6
         - VENV=venv
     - os: osx
       env:
