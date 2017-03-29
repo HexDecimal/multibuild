@@ -31,11 +31,15 @@ matrix:
         - VENV=venv
     - os: osx
       env:
-        - PYTHON_VERSION=pypy-2.6
+        - PYTHON_VERSION=pypy-1
         - VENV=venv
     - os: osx
       env:
-        - PYTHON_VERSION=pypy-4.0
+        - PYTHON_VERSION=pypy-2
+        - VENV=venv
+    - os: osx
+      env:
+        - PYTHON_VERSION=pypy-4
         - VENV=venv
     - os: osx
       env:
